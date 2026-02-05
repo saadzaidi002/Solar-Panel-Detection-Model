@@ -1,0 +1,166 @@
+!pip install ultralytics
+
+!pip install roboflow
+
+from roboflow import Roboflow
+rf = Roboflow(api_key="9XJAqfvOdBAsSCCYJT8y")
+project = rf.workspace("yolo-hwtah").project("solar-panels-ilvt9")
+version = project.version(3)
+dataset = version.download("yolov8-obb")
+
+dataset.location  # Optional: just to verify
+
+from ultralytics import YOLO
+
+# Load the nano-size OBB model
+model = YOLO("yolov8n-obb.pt")
+
+# Train
+model.train(data="solar-panels-3/data.yaml", epochs=50, imgsz=640)
+
+import os
+os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
+
+# 1. Delete old predictions
+import shutil
+shutil.rmtree('/content/runs/detect/predict', ignore_errors=True)
+
+
+from ultralytics import YOLO
+
+# Load the correct model checkpoint
+model = YOLO("runs/obb/train/weights/best.pt")
+
+# Run prediction
+model.predict(
+    source=f"{dataset.location}/valid/images",  # Make sure dataset.location is correct
+    conf=0.6,
+    save=True,
+    show_labels=False,
+)
+
+import glob
+from IPython.display import Image, display
+
+for image_path in glob.glob('/content/runs/obb/predict/*.jpg')[:10]:
+    display(Image(filename=image_path, height=400))
+    print('\n')
+
+
+from ultralytics import YOLO
+import os
+import cv2
+import numpy as np
+import matplotlib.pyplot as plt
+from shapely.geometry import Polygon
+
+# Load model
+model = YOLO("/content/runs/obb/train/weights/best.pt")  # Change if needed
+
+# Folders
+folder_2023 = "/content/images_2023"
+folder_2025 = "/content/images_2025"
+
+# Get matching image filenames
+images_2023 = set(os.listdir(folder_2023))
+images_2025 = set(os.listdir(folder_2025))
+common_images = sorted(images_2023 & images_2025)
+
+print(f"🟡 Found {len(common_images)} matching images.")
+
+# Helper: get OBB polygons
+def get_polygons(result, conf_thresh=0.25):
+    obbs = []
+    if result.obb is None:
+        return obbs
+    for obb in result.obb:
+        conf = obb.conf[0].item()
+        if conf < conf_thresh:
+            continue
+        corners = obb.xyxyxyxy[0].view(4, 2).tolist()
+        obbs.append(corners)
+    return obbs
+
+# Helper: IOU between two OBBs
+def obb_iou(poly1, poly2):
+    p1, p2 = Polygon(poly1), Polygon(poly2)
+    if not p1.is_valid or not p2.is_valid:
+        return 0
+    inter = p1.intersection(p2).area
+    union = p1.union(p2).area
+    return inter / union if union != 0 else 0
+
+IOU_THRESHOLD = 0.2
+
+# Process all matched images
+for filename in common_images:
+    print(f"\n🔍 Comparing: {filename}")
+
+    # Predict on both years
+    result_2023 = model.predict(source=os.path.join(folder_2023, filename), conf=0.25, save=False)[0]
+    result_2025 = model.predict(source=os.path.join(folder_2025, filename), conf=0.25, save=False)[0]
+
+    panels_2023 = get_polygons(result_2023)
+    panels_2025 = get_polygons(result_2025)
+
+    matched_2023 = [False] * len(panels_2023)
+    matched_2025 = [False] * len(panels_2025)
+
+    # Compare 2025 panels with 2023 panels
+    for i, poly_25 in enumerate(panels_2025):
+        for j, poly_23 in enumerate(panels_2023):
+            iou = obb_iou(poly_25, poly_23)
+            if iou > IOU_THRESHOLD:
+                matched_2025[i] = True
+                matched_2023[j] = True
+                break
+
+    # Load images
+    img_2023 = cv2.imread(os.path.join(folder_2023, filename))
+    img_2023 = cv2.cvtColor(img_2023, cv2.COLOR_BGR2RGB)
+
+    img_2025 = cv2.imread(os.path.join(folder_2025, filename))
+    img_2025 = cv2.cvtColor(img_2025, cv2.COLOR_BGR2RGB)
+
+    # Draw 2023 panels in blue
+    for poly in panels_2023:
+        pts = np.array(poly, np.int32).reshape((-1, 1, 2))
+        cv2.polylines(img_2023, [pts], isClosed=True, color=(0, 0, 255), thickness=2)  # 🔵 Blue = 2023
+
+    # Draw 2025 matching panels in blue (for reference)
+    for i, matched in enumerate(matched_2025):
+        if matched:
+            poly = panels_2025[i]
+            pts = np.array(poly, np.int32).reshape((-1, 1, 2))
+            cv2.polylines(img_2025, [pts], isClosed=True, color=(0, 0, 255), thickness=2)  # 🔵 Blue = same
+
+    # Draw ADDED panels in green
+    for i, matched in enumerate(matched_2025):
+        if not matched:
+            poly = panels_2025[i]
+            pts = np.array(poly, np.int32).reshape((-1, 1, 2))
+            cv2.polylines(img_2025, [pts], isClosed=True, color=(0, 255, 0), thickness=2)  # 🟩 Green = added
+
+    # Draw REMOVED panels in red
+    for i, matched in enumerate(matched_2023):
+        if not matched:
+            poly = panels_2023[i]
+            pts = np.array(poly, np.int32).reshape((-1, 1, 2))
+            cv2.polylines(img_2025, [pts], isClosed=True, color=(255, 0, 0), thickness=2)  # 🟥 Red = removed
+
+    # SHOW RESULTS SIDE-BY-SIDE
+    fig, axs = plt.subplots(1, 2, figsize=(14, 7))
+    axs[0].imshow(img_2023)
+    axs[0].set_title(f"{filename} — 2023 (Blue: Panels)")
+    axs[0].axis('off')
+
+    axs[1].imshow(img_2025)
+    axs[1].set_title(f"{filename} — 2025 (🟩 Added, 🟥 Removed, 🔵 Same)")
+    axs[1].axis('off')
+
+    plt.tight_layout()
+    plt.show()
+
+
+
+
