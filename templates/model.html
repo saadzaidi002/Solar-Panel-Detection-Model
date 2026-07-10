@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block title %}Detection Model — SolarVision AI{% endblock %}
+{% block meta_description %}Upload satellite imagery and detect solar panels instantly using our YOLOv8 AI model.{% endblock %}
+
+{% block content %}
+<div class="model-page">
+    <div class="section">
+        <div class="section-header">
+            <div class="section-label">AI Detection</div>
+            <h2>Solar Panel Detection Model</h2>
+            <p>
+                Upload a satellite or aerial image below and our YOLOv8-OBB model will
+                detect and highlight all visible solar panels with oriented bounding boxes.
+            </p>
+        </div>
+
+        {% if not model_available %}
+        <div class="no-model-notice animate-on-scroll">
+            <strong>ℹ️ Note:</strong> The custom-trained model weights were not found. The system will use the
+            pretrained <code>yolov8n-obb.pt</code> model. For best results with solar panel detection,
+            please train the model first using the provided <code>SPD.py</code> notebook.
+        </div>
+        {% endif %}
+
+        <!-- Upload Zone -->
+        <div class="upload-zone animate-on-scroll" id="uploadZone">
+            <div class="upload-icon">📤</div>
+            <h3>Drag & Drop Your Image Here</h3>
+            <p>or click to browse — supports JPG, PNG, TIFF</p>
+            <input type="file" id="imageInput" accept="image/*">
+        </div>
+
+        <!-- Image Preview -->
+        <div class="preview-container" id="previewContainer">
+            <h3 style="text-align:center; margin-bottom:16px; color: var(--text-secondary); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.08em;">Original Image</h3>
+            <img id="previewImage" class="preview-image" alt="Preview of uploaded image">
+        </div>
+
+        <!-- Detect Button -->
+        <div class="detect-btn-container" id="detectBtnContainer">
+            <button class="btn btn-primary" id="detectBtn" style="padding: 16px 48px; font-size: 1.05rem;">
+                🔍 Run Detection
+            </button>
+        </div>
+
+        <!-- Results -->
+        <div class="result-container" id="resultContainer">
+            <div class="section-divider" style="margin-bottom: 40px;"></div>
+            <div class="section-header" style="margin-bottom: 32px;">
+                <div class="section-label">Results</div>
+                <h2>Detection Results</h2>
+            </div>
+
+            <div class="glass-card" style="padding: 24px;">
+                <img id="resultImage" class="result-image" alt="Detection result with solar panels highlighted">
+            </div>
+
+            <div class="result-stats">
+                <div class="glass-card stat-card">
+                    <div class="stat-value" id="panelCount">0</div>
+                    <div class="stat-label">Panels Detected</div>
+                </div>
+                <div class="glass-card stat-card">
+                    <div class="stat-value" id="avgConfidence">0%</div>
+                    <div class="stat-label">Avg Confidence</div>
+                </div>
+                <div class="glass-card stat-card">
+                    <div class="stat-value" id="processingTime">0s</div>
+                    <div class="stat-label">Processing Time</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Loading Overlay -->
+<div class="loading-overlay" id="loadingOverlay">
+    <div class="spinner"></div>
+    <div class="loading-text">Analyzing image with YOLOv8 model...</div>
+</div>
+{% endblock %}

@@ -1,0 +1,177 @@
+{% extends "base.html" %}
+
+{% block title %}SolarVision AI — Intelligent Solar Panel Detection{% endblock %}
+{% block meta_description %}Detect and monitor solar panels from satellite imagery using cutting-edge YOLOv8 AI. Powering renewable energy insights with machine learning.{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero">
+    <div class="hero-grid"></div>
+    <div class="hero-content">
+        <div class="hero-badge">
+            <span class="dot"></span>
+            Powered by YOLOv8 Deep Learning
+        </div>
+        <h1>
+            Intelligent<br>
+            <span class="gradient-text">Solar Panel Detection</span><br>
+            from Satellite Imagery
+        </h1>
+        <p>
+            Harness the power of advanced computer vision to detect, monitor, and analyze
+            solar panel installations from high-resolution satellite images — enabling
+            smarter decisions for renewable energy growth.
+        </p>
+        <div class="hero-buttons">
+            <a href="{{ url_for('model_page') }}" class="btn btn-primary">
+                🔍 Try the Model
+            </a>
+            <a href="#why-it-matters" class="btn btn-secondary">
+                Learn More ↓
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Why It Matters -->
+<section id="why-it-matters" class="section">
+    <div class="section-header animate-on-scroll">
+        <div class="section-label">Impact</div>
+        <h2>Why Solar Panel Detection Matters</h2>
+        <p>
+            As the world transitions to renewable energy, understanding the scale and distribution
+            of solar installations becomes critical for planning, policy, and progress.
+        </p>
+    </div>
+
+    <div class="features-grid">
+        <div class="glass-card feature-card animate-on-scroll">
+            <div class="feature-icon">🌍</div>
+            <h3>Renewable Energy Monitoring</h3>
+            <p>
+                Track the adoption and expansion of solar energy infrastructure across regions,
+                cities, and countries to measure progress toward sustainability goals.
+            </p>
+        </div>
+
+        <div class="glass-card feature-card animate-on-scroll">
+            <div class="feature-icon">📊</div>
+            <h3>Data-Driven Urban Planning</h3>
+            <p>
+                Provide governments and planners with precise, up-to-date spatial data on solar
+                installations to inform infrastructure investment and grid optimization.
+            </p>
+        </div>
+
+        <div class="glass-card feature-card animate-on-scroll">
+            <div class="feature-icon">🛰️</div>
+            <h3>Satellite-Scale Analysis</h3>
+            <p>
+                Process vast areas of satellite imagery automatically, replacing manual surveys
+                with AI-powered detection that scales effortlessly.
+            </p>
+        </div>
+
+        <div class="glass-card feature-card animate-on-scroll">
+            <div class="feature-icon">📈</div>
+            <h3>Change Detection Over Time</h3>
+            <p>
+                Compare imagery from different time periods to identify newly installed or
+                removed solar panels, providing actionable insights on energy trends.
+            </p>
+        </div>
+
+        <div class="glass-card feature-card animate-on-scroll">
+            <div class="feature-icon">⚡</div>
+            <h3>Energy Capacity Estimation</h3>
+            <p>
+                Estimate energy generation potential based on detected panel coverage area,
+                helping utilities and policymakers forecast supply.
+            </p>
+        </div>
+
+        <div class="glass-card feature-card animate-on-scroll">
+            <div class="feature-icon">🔬</div>
+            <h3>Research & Development</h3>
+            <p>
+                Support academic and industry research on solar adoption patterns,
+                efficiency trends, and the impact of policy incentives.
+            </p>
+        </div>
+    </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- How It Works -->
+<section class="section">
+    <div class="section-header animate-on-scroll">
+        <div class="section-label">Pipeline</div>
+        <h2>How It Works</h2>
+        <p>
+            Our AI pipeline transforms raw satellite imagery into precise solar panel detections
+            using a state-of-the-art Oriented Bounding Box (OBB) model.
+        </p>
+    </div>
+
+    <div class="steps-container">
+        <div class="glass-card step-card animate-on-scroll">
+            <div class="step-number">1</div>
+            <h3>Satellite Image Input</h3>
+            <p>High-resolution satellite or aerial imagery is fed into the detection pipeline as input.</p>
+        </div>
+
+        <div class="glass-card step-card animate-on-scroll">
+            <div class="step-number">2</div>
+            <h3>YOLOv8-OBB Inference</h3>
+            <p>The trained YOLOv8 model with Oriented Bounding Box detection processes the image in real-time.</p>
+        </div>
+
+        <div class="glass-card step-card animate-on-scroll">
+            <div class="step-number">3</div>
+            <h3>Panel Localization</h3>
+            <p>Detected solar panels are precisely localized with rotated bounding boxes that match panel orientation.</p>
+        </div>
+
+        <div class="glass-card step-card animate-on-scroll">
+            <div class="step-number">4</div>
+            <h3>Analysis & Insights</h3>
+            <p>Detection results are analyzed to provide panel counts, confidence scores, and change-over-time metrics.</p>
+        </div>
+    </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- Tech Stack -->
+<section class="section">
+    <div class="section-header animate-on-scroll">
+        <div class="section-label">Technology</div>
+        <h2>Built With Cutting-Edge AI</h2>
+        <p>
+            Leveraging the latest advances in deep learning, computer vision,
+            and geospatial analysis.
+        </p>
+    </div>
+
+    <div class="features-grid">
+        <div class="glass-card feature-card animate-on-scroll">
+            <div class="feature-icon">🧠</div>
+            <h3>YOLOv8 OBB</h3>
+            <p>Ultralytics YOLOv8 with Oriented Bounding Box support for precise rotated object detection on satellite imagery.</p>
+        </div>
+
+        <div class="glass-card feature-card animate-on-scroll">
+            <div class="feature-icon">🗂️</div>
+            <h3>Roboflow Dataset</h3>
+            <p>Curated, annotated solar panel dataset from Roboflow, ensuring high-quality training data for robust model performance.</p>
+        </div>
+
+        <div class="glass-card feature-card animate-on-scroll">
+            <div class="feature-icon">🔄</div>
+            <h3>IoU Change Detection</h3>
+            <p>Intersection-over-Union based polygon comparison algorithm to identify added, removed, and persistent solar panels.</p>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+
+{% block title %}About — SolarVision AI{% endblock %}
+{% block meta_description %}Learn about the developer and the Solar Panel Detection & Change Detection AI project built with YOLOv8.{% endblock %}
+
+{% block content %}
+<div class="about-page">
+
+    <!-- Developer Section -->
+    <section class="about-hero animate-on-scroll">
+        <div class="about-photo-wrapper">
+            <img src="{{ url_for('static', filename='images/profile.jpeg') }}" alt="Syed Muhammad Saad Hussain Zaidi" class="about-photo">
+        </div>
+
+        <div class="about-info">
+            <h1>Syed Muhammad Saad Hussain Zaidi</h1>
+            <div class="about-title">Data Scientist &nbsp;|&nbsp; Physicist &nbsp;|&nbsp; Web Developer</div>
+            <div class="about-bio">
+                <p>
+                    Hello! I am a multi-disciplinary professional bridging the gap between rigorous
+                    scientific analysis and modern software development. My work sits at the
+                    intersection of physics, data science, and web development — combining analytical
+                    precision with creative problem-solving to deliver impactful solutions.
+                </p>
+            </div>
+            <div class="expertise-tags">
+                <span class="expertise-tag">Machine Learning</span>
+                <span class="expertise-tag">Deep Learning</span>
+                <span class="expertise-tag">Computer Vision</span>
+                <span class="expertise-tag">Physics</span>
+                <span class="expertise-tag">Web Development</span>
+                <span class="expertise-tag">YOLOv8</span>
+                <span class="expertise-tag">Data Science</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Expertise Details -->
+    <div class="expertise-grid">
+        <div class="glass-card expertise-card animate-on-scroll">
+            <div class="feature-icon">🔬</div>
+            <h3>Physics</h3>
+            <p>
+                Grounded in analytical thinking, problem-solving, and understanding complex systems.
+                Applying principles of physics to real-world data analysis and modeling challenges.
+            </p>
+        </div>
+
+        <div class="glass-card expertise-card animate-on-scroll">
+            <div class="feature-icon">🧠</div>
+            <h3>Data Science</h3>
+            <p>
+                Specialized in Machine Learning, Deep Learning (ANNs), and predictive modeling
+                to extract actionable insights from raw data. Experienced with modern ML frameworks
+                and end-to-end data pipelines.
+            </p>
+        </div>
+
+        <div class="glass-card expertise-card animate-on-scroll">
+            <div class="feature-icon">🌐</div>
+            <h3>Web Development</h3>
+            <p>
+                Capable of turning complex backend logic and machine learning models into intuitive,
+                user-friendly web applications that bring AI to the hands of end users.
+            </p>
+        </div>
+    </div>
+
+    <div class="section-divider" style="margin-top: 80px;"></div>
+
+    <!-- Project Section -->
+    <section class="project-section">
+        <div class="section-header animate-on-scroll">
+            <div class="section-label">Project</div>
+            <h2>About This Project</h2>
+        </div>
+
+        <div class="glass-card project-card animate-on-scroll">
+            <h2>Solar Panel Detection & Change Detection AI Model</h2>
+            <p style="color: var(--text-accent); font-size: 0.9rem; margin-bottom: 20px;">
+                RESOLVE South &nbsp;•&nbsp; SUPARCO Complex, Karachi
+            </p>
+            <p>
+                This project is an advanced AI system developed to detect and monitor solar panels
+                from high-resolution satellite imagery. At its core, the system leverages a
+                <strong style="color: var(--text-primary);">YOLOv8-based machine learning model</strong>
+                optimized specifically for Oriented Bounding Box (OBB) detection — enabling
+                precise localization of solar panels regardless of their angle or orientation in aerial views.
+            </p>
+            <p>
+                The project goes beyond simple detection. A rigorous
+                <strong style="color: var(--text-primary);">model comparison pipeline</strong>
+                was implemented to evaluate and select the highest-accuracy architecture,
+                ensuring reliable and reproducible results across diverse satellite imagery conditions.
+            </p>
+            <p>
+                A key feature of the system is its
+                <strong style="color: var(--text-primary);">temporal change detection</strong> capability.
+                By analyzing satellite imagery from different time periods, the model identifies newly installed
+                solar panels, tracks removals, and quantifies changes in solar infrastructure — providing
+                actionable insights for renewable energy monitoring, urban planning, and sustainability reporting.
+            </p>
+
+            <ul class="project-highlights">
+                <li>YOLOv8-OBB model trained on curated satellite solar panel dataset</li>
+                <li>Oriented Bounding Box detection for precise panel localization at any angle</li>
+                <li>Model comparison and optimization for highest detection accuracy</li>
+                <li>Temporal change detection using IoU-based polygon matching</li>
+                <li>Color-coded visualization: added (green), removed (red), persistent (blue) panels</li>
+                <li>Actionable insights for renewable energy monitoring and growth analysis</li>
+                <li>Full-stack web interface for easy model interaction and result visualization</li>
+            </ul>
+        </div>
+    </section>
+</div>
+{% endblock %}
