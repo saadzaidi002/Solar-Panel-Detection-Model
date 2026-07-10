@@ -34,7 +34,8 @@ Our model was trained on a custom dataset using Google Colab's T4 GPUs, achievin
 ### 🎥 Live Video Demonstration
 Check out the model detecting solar panels in real-time below:
 
-<video src="./Solarpanel%20-%20a%20Hugging%20Face%20Space%20by%20smsaad001%20-%20Google%20Chrome%202026-07-11%2003-50-10.mp4" controls="controls" width="100%"></video>
+👉 **[Click here to watch the Live Demo Video](./Solarpanel%20-%20a%20Hugging%20Face%20Space%20by%20smsaad001%20-%20Google%20Chrome%202026-07-11%2003-50-10.mp4)**
+*(GitHub requires you to click the link to play the video natively)*
 
 ---
 
