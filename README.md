@@ -89,5 +89,5 @@ Don't have a powerful GPU? No problem. This repository includes everything you n
 - `best.pt`: The highly optimized, pre-trained YOLOv8 weights (Stored on Hugging Face).
 
 <div align="center">
-  <i>Developed by smsaad001</i>
+  <i>Developed by Syed Muhammad Saad Hussain Zaidi</i>
 </div>
