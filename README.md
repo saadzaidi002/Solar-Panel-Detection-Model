@@ -31,7 +31,10 @@ Our model was trained on a custom dataset using Google Colab's T4 GPUs, achievin
   <img src="./Result%203.png" alt="Detection Result 3" width="45%">
 </div>
 
-> **Note:** A full video demonstration of the live inference app in action is available in the repository as `Solarpanel - a Hugging Face Space by smsaad001 - Google Chrome 2026-07-11 03-50-10.mp4`.
+### 🎥 Live Video Demonstration
+Check out the model detecting solar panels in real-time below:
+
+<video src="./Solarpanel%20-%20a%20Hugging%20Face%20Space%20by%20smsaad001%20-%20Google%20Chrome%202026-07-11%2003-50-10.mp4" controls="controls" width="100%"></video>
 
 ---
 
